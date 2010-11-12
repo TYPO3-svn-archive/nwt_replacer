@@ -27,7 +27,12 @@
  * @version $Id$
  * @package nwt_replacer
  */
-class Tx_NwtReplacer_Replacer {
+class Tx_NwtReplacer_Replacer implements t3lib_Singleton {
+	/**
+	 * @var boolean
+	 */
+	protected $isExecuted = FALSE;
+
 	/**
 	 * @var array
 	 */
@@ -45,6 +50,11 @@ class Tx_NwtReplacer_Replacer {
 	 * @return void
 	 */
 	public function contentPostProc() {
+		if ($this->isExecuted) {
+			return;
+		}
+		$this->isExecuted = TRUE;
+
 		$content = $GLOBALS['TSFE']->content;
 
 		foreach (self::$markers as $marker) {
