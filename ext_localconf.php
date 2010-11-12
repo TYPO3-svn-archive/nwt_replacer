@@ -4,7 +4,7 @@ if (!defined ('TYPO3_MODE')) {
 }
 
 $TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-all'][] = 
-	'EXT:nwt_replacer/Classes/Replacer.php:&tx_nwtreplacer_replacer->contentPostProc';
+	'EXT:nwt_replacer/Classes/Replacer.php:&tx_nwtreplacer_replacer->contentPostProcCached';
 $TYPO3_CONF_VARS['SC_OPTIONS']['tslib/class.tslib_fe.php']['contentPostProc-output'][] = 
-	'EXT:nwt_replacer/Classes/Replacer.php:&tx_nwtreplacer_replacer->contentPostProc';
+	'EXT:nwt_replacer/Classes/Replacer.php:&tx_nwtreplacer_replacer->contentPostProcNotCached';
 ?>

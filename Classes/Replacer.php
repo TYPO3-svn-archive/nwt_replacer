@@ -29,11 +29,6 @@
  */
 class Tx_NwtReplacer_Replacer implements t3lib_Singleton {
 	/**
-	 * @var boolean
-	 */
-	protected $isExecuted = FALSE;
-
-	/**
 	 * @var array
 	 */
 	static protected $patterns = array();
@@ -50,11 +45,6 @@ class Tx_NwtReplacer_Replacer implements t3lib_Singleton {
 	 * @return void
 	 */
 	public function contentPostProc() {
-		if ($this->isExecuted) {
-			return;
-		}
-		$this->isExecuted = TRUE;
-
 		$content = $GLOBALS['TSFE']->content;
 
 		foreach (self::$markers as $marker) {
@@ -71,11 +61,31 @@ class Tx_NwtReplacer_Replacer implements t3lib_Singleton {
 
 		$GLOBALS['TSFE']->content = $content;
 	}
+	
+	/**
+	 * @see self::contentPostProc()
+	 * @return void
+	 */
+	public function contentPostProcCached() {
+		if (!$GLOBALS['TSFE']->isINTincScript()) {
+			$this->contentPostProc();
+		}
+	}
+		
+	/**
+	 * @see self::contentPostProc()
+	 * @return void
+	 */
+	public function contentPostProcNotCached() {
+		if ($GLOBALS['TSFE']->isINTincScript()) {
+			$this->contentPostProc();
+		}
+	}
 
 	/**
 	 * registeres a simple string to be replaced
 	 * 
-	 * @see registerPattern for more special patterns
+	 * @see self::registerPattern() for more special patterns
 	 * @param string $search
 	 * @param string $replace
 	 * @param boolean $ignoreCase
@@ -92,7 +102,7 @@ class Tx_NwtReplacer_Replacer implements t3lib_Singleton {
 	/**
 	 * registers a pattern to be replaced
 	 * 
-	 * @see registerMarker to be used for simple strings
+	 * @see self::registerMarker() to be used for simple strings
 	 * @param string $search pattern as used in preg_replace
 	 * @param string $replace as used in preg_replace
 	 * @return void
